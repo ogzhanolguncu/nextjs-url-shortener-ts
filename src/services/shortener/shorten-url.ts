@@ -1,4 +1,4 @@
-import { createRedisClient } from "@/clients/redis";
+import { redis } from "@/clients/redis";
 import crypto from "crypto";
 import { fromPromise } from "neverthrow";
 type ShortLinkCacheValues = {
@@ -21,13 +21,9 @@ export const setShortUrlToCache = async (
   };
   const payloadKey = crypto.randomUUID();
   const res = fromPromise(
-    createRedisClient().set<ShortLinkCacheValues>(
-      payloadKey,
-      payload,
-      {
-        ex: expirationTime,
-      }
-    ),
+    redis.set<ShortLinkCacheValues>(payloadKey, payload, {
+      ex: expirationTime,
+    }),
     (_error) => {
       console.error(
         `Something went wrong when setting ${linkToShorten}`
@@ -41,4 +37,18 @@ export const setShortUrlToCache = async (
   );
 };
 
-export const getShortUrlFromCache = async () => {};
+export const getShortUrlFromCache = async (payloadKey: string) => {
+  const res = fromPromise(
+    redis.get<ShortLinkCacheValues>(payloadKey),
+    (_error) => {
+      console.error(
+        `Something went wrong when getting k:${payloadKey}`
+      );
+    }
+  );
+
+  return res.match(
+    (res) => res,
+    (_) => null
+  );
+};

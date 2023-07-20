@@ -12,3 +12,5 @@ export const createRedisClient = () => {
   });
   return redis;
 };
+
+export const redis = createRedisClient();
