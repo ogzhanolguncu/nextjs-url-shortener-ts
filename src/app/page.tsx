@@ -1,5 +1,6 @@
 import { shortenUrl } from "@/actions/set-shorten-url";
 import { Feedback } from "@/components/Feedback";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default function Home() {
   return (
@@ -24,13 +25,7 @@ export default function Home() {
                     placeholder="Enter your URL"
                     name="long-url"
                   />
-                  <button
-                    aria-label="Send"
-                    type="submit"
-                    className="absolute right-0 top-[50%] mr-[6px] flex h-10 translate-y-[-50%] items-center justify-center rounded-full bg-neutral-900/40 bg-gradient-to-br p-4 font-bold text-neutral-300 ring-0 transition-all duration-500 hover:bg-neutral-950"
-                  >
-                    Shorten URL
-                  </button>
+                  <SubmitButton />
                 </form>
               </div>
               <Feedback />
