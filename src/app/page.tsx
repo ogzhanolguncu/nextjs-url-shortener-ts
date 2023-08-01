@@ -1,3 +1,5 @@
+import { shortenUrl } from "@/actions/shorten-url";
+
 export default function Home() {
   return (
     <main className="mx-auto flex h-screen max-w-[1000px] flex-col items-center justify-center px-4 md:flex-row">
@@ -14,17 +16,21 @@ export default function Home() {
             </p>
             <div className="mx-auto h-12  w-[300px] max-w-full  md:mx-0 md:w-[370px]">
               <div className="relative flex h-[50px] w-full  justify-start rounded-[999px]  bg-white/10 px-5">
-                <input
-                  className=" rounded-l-xl bg-transparent py-3 text-[16px] font-thin tracking-wider text-white outline-none placeholder:text-neutral-300"
-                  type="text"
-                  placeholder="Enter your URL"
-                />
-                <button
-                  aria-label="Send"
-                  className="absolute right-0 top-[50%] mr-[6px] flex h-10 translate-y-[-50%] items-center justify-center rounded-full bg-neutral-900/40 bg-gradient-to-br p-4 font-bold text-neutral-300 ring-0 transition-all duration-500 hover:bg-neutral-950"
-                >
-                  Shorten URL
-                </button>
+                <form action={shortenUrl}>
+                  <input
+                    className=" rounded-l-xl bg-transparent py-3 text-[16px] font-thin tracking-wider text-white outline-none placeholder:text-neutral-300"
+                    type="text"
+                    placeholder="Enter your URL"
+                    name="long-url"
+                  />
+                  <button
+                    aria-label="Send"
+                    type="submit"
+                    className="absolute right-0 top-[50%] mr-[6px] flex h-10 translate-y-[-50%] items-center justify-center rounded-full bg-neutral-900/40 bg-gradient-to-br p-4 font-bold text-neutral-300 ring-0 transition-all duration-500 hover:bg-neutral-950"
+                  >
+                    Shorten URL
+                  </button>
+                </form>
               </div>
             </div>
           </div>
