@@ -4,9 +4,8 @@ type Props = {
   params: { [key: string]: string };
   searchParams: { [key: string]: string };
 };
-export const ShortenedUrl = async (props: Props) => {
+
+export default async function ShortenedUrl(props: Props) {
   await getFullUrl(props.params.pathKey);
   return null;
-};
-
-export default ShortenedUrl;
+}
