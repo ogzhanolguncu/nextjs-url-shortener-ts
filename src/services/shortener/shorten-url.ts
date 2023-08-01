@@ -1,6 +1,6 @@
 import { redis } from "@/clients/redis";
-import crypto from "crypto";
 import { fromPromise } from "neverthrow";
+import { nanoid } from "nanoid";
 
 type ShortLinkCacheValues = {
   createadAt: number; //Date.now()
@@ -8,6 +8,7 @@ type ShortLinkCacheValues = {
   actualLink: string;
 };
 
+export const UUID_LENGTH = 6;
 const EIGHT_HOUR_IN_SEC = 3600 * 8;
 export const EIGHT_HOUR_IN_MS = EIGHT_HOUR_IN_SEC * 1000;
 
@@ -20,7 +21,7 @@ export const setShortUrlToCache = async (
     expiredAt: expirationTime,
     actualLink: linkToShorten,
   };
-  const payloadKey = crypto.randomUUID();
+  const payloadKey = nanoid(UUID_LENGTH);
   const res = fromPromise(
     redis.set<ShortLinkCacheValues>(payloadKey, payload, {
       ex: expirationTime,
