@@ -1,6 +1,9 @@
-import { describe, expect, it, vi } from "vitest";
-import { shortenUrl } from "./shorten-url";
+import { describe, expect, it, vi, afterEach } from "vitest";
+import { shortenUrl } from "./set-shorten-url";
 import { nanoid } from "nanoid";
+import * as shortenUrlService from "@/services/shortener/shorten-url";
+import { getFullUrl } from "./get-shorten-url";
+import { redis } from "@/clients/redis";
 
 vi.mock("shortenUrlPayloadSchema", async () => {
   const shortenUrlPayloadSchema = await vi.importActual<
@@ -24,21 +27,27 @@ vi.mock("@/clients/redis", () => ({
   },
 }));
 
-vi.mock("nanoid", async () => {
-  const mockedNanoid = await vi.importActual<typeof import("nanoid")>("nanoid");
+vi.mock("next/navigation", async () => {
+  const mockedNavigation = await vi.importActual<
+    typeof import("next/navigation")
+  >("next/navigation");
   return {
-    ...mockedNanoid,
-    nanoid: vi.fn().mockReturnValue("YGRxmg"),
+    ...mockedNavigation,
+    redirect: vi.fn(),
   };
 });
 
 describe("Shorten URL Server Actions", () => {
-  it("should return long url", async () => {
+  it("should call setShortUrlToCache to cache", async () => {
+    vi.spyOn(shortenUrlService, "setShortUrlToCache").mockImplementation(() =>
+      Promise.resolve(nanoid()),
+    );
+
     const formData = new FormData();
     formData.set("long-url", "https://ogzhanolguncu.com/");
 
-    const result = await shortenUrl(formData);
-    expect(result).toBe(`http://localhost:3000/${nanoid()}`);
+    await shortenUrl(formData);
+    expect(shortenUrlService.setShortUrlToCache).toHaveBeenCalledOnce();
   });
 
   it("should return error if validation fails", async () => {
@@ -46,5 +55,20 @@ describe("Shorten URL Server Actions", () => {
     formData.set("long-url", "");
     const result = await shortenUrl(formData);
     expect(result).toBe("String must contain at least 1 character(s)");
+  });
+
+  it("should call getShortUrlFromCache and get full url", async () => {
+    const urlToShorten = "https://ogzhanolguncu.com/";
+    const keyForShortenedURL = nanoid(6);
+    vi.spyOn(shortenUrlService, "getShortUrlFromCache").mockImplementation(() =>
+      Promise.resolve(null),
+    );
+    vi.spyOn(redis, "set").mockResolvedValue(
+      Promise.resolve(keyForShortenedURL),
+    );
+    vi.spyOn(redis, "get").mockResolvedValue(Promise.resolve(urlToShorten));
+
+    await getFullUrl(nanoid(shortenUrlService.UUID_LENGTH));
+    expect(shortenUrlService.getShortUrlFromCache).toHaveBeenCalledOnce();
   });
 });

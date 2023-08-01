@@ -9,10 +9,8 @@ export const Feedback = () => {
 
   useEffect(() => {
     const shortUrl = searchParams.get("short-url");
-    if (!shortUrl) return;
 
-    const url = `${window.location.origin}/${shortUrl}`;
-    setRedirectionPath(url);
+    setRedirectionPath(shortUrl);
   }, [searchParams]);
 
   return Boolean(redirectionPath) ? (

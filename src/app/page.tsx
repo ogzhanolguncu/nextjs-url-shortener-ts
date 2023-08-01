@@ -1,4 +1,4 @@
-import { shortenUrl } from "@/actions/shorten-url";
+import { shortenUrl } from "@/actions/set-shorten-url";
 import { Feedback } from "@/components/Feedback";
 
 export default function Home() {
