@@ -4,7 +4,7 @@ import React from "react";
 import { experimental_useFormStatus as useFormStatus } from "react-dom";
 
 export const SubmitButton = () => {
-  const { pending, data } = useFormStatus();
+  const { pending } = useFormStatus();
   return (
     <button
       aria-label="Send"
