@@ -22,6 +22,18 @@ vi.mock("next/navigation", async () => {
     redirect: vi.fn(),
   };
 });
+vi.mock("next/headers", async () => {
+  const mockedHeaders = await vi.importActual<typeof import("next/headers")>(
+    "next/headers",
+  );
+  return {
+    ...mockedHeaders,
+    cookies: vi.fn(() => ({
+      get: vi.fn(),
+      set: vi.fn(),
+    })),
+  };
+});
 
 describe("Shorten URL Server Actions", () => {
   it("should call setShortUrlToCache to cache", async () => {
