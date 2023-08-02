@@ -61,14 +61,12 @@ describe("Shorten URL Server Actions", () => {
     const urlToShorten = "https://ogzhanolguncu.com/";
     const keyForShortenedURL = nanoid(6);
     vi.spyOn(shortenUrlService, "getShortUrlFromCache").mockImplementation(() =>
-      Promise.resolve(null),
+      Promise.resolve({
+        actualLink: urlToShorten,
+      } as shortenUrlService.ShortLinkCacheValues),
     );
-    vi.spyOn(redis, "set").mockResolvedValue(
-      Promise.resolve(keyForShortenedURL),
-    );
-    vi.spyOn(redis, "get").mockResolvedValue(Promise.resolve(urlToShorten));
 
-    await getFullUrl(nanoid(shortenUrlService.UUID_LENGTH));
+    await getFullUrl(keyForShortenedURL);
     expect(shortenUrlService.getShortUrlFromCache).toHaveBeenCalledOnce();
   });
 });

@@ -2,7 +2,7 @@ import { redis } from "@/clients/redis";
 import { fromPromise } from "neverthrow";
 import { nanoid } from "nanoid";
 
-type ShortLinkCacheValues = {
+export type ShortLinkCacheValues = {
   createadAt: number; //Date.now()
   expiredAt: number; //Date.now()
   actualLink: string;
@@ -21,9 +21,9 @@ export const setShortUrlToCache = async (
     expiredAt: expirationTime,
     actualLink: linkToShorten,
   };
-  const payloadKey = nanoid(UUID_LENGTH);
+  const pathKey = nanoid(UUID_LENGTH);
   const res = fromPromise(
-    redis.set<ShortLinkCacheValues>(payloadKey, payload, {
+    redis.set<ShortLinkCacheValues>(pathKey, payload, {
       ex: expirationTime,
     }),
     (_error) => {
@@ -32,16 +32,16 @@ export const setShortUrlToCache = async (
   );
 
   return res.match(
-    (_) => payloadKey,
+    (_) => pathKey,
     (_) => null,
   );
 };
 
-export const getShortUrlFromCache = async (payloadKey: string) => {
+export const getShortUrlFromCache = async (pathKey: string) => {
   const res = fromPromise(
-    redis.get<ShortLinkCacheValues>(payloadKey),
+    redis.get<ShortLinkCacheValues>(pathKey),
     (_error) => {
-      console.error(`Something went wrong when getting k:${payloadKey}`);
+      console.error(`Something went wrong when getting k:${pathKey}`);
     },
   );
 
