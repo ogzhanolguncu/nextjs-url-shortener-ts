@@ -3,19 +3,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { getShortUrlFromCache, setShortUrlToCache } from "./shorten-url";
 import crypto from "crypto";
 
-vi.mock("@/clients/redis", () => ({
-  redis: {
-    set: async <T>(
-      key: string,
-      value: T,
-      options: { ex: number },
-    ): Promise<string | null> => {
-      return "OK";
-    },
-    get: vi.fn(),
-  },
-}));
-
 describe("Shorten URL Set", () => {
   afterEach(() => {
     vi.restoreAllMocks();

@@ -24,6 +24,7 @@ export default function Home() {
                     type="text"
                     placeholder="Enter your URL"
                     name="long-url"
+                    data-testid="long-url"
                   />
                   <SubmitButton />
                 </form>

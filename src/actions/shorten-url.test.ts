@@ -1,9 +1,8 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { shortenUrl } from "./set-shorten-url";
-import { nanoid } from "nanoid";
 import * as shortenUrlService from "@/services/shortener/shorten-url";
+import { nanoid } from "nanoid";
+import { describe, expect, it, vi } from "vitest";
 import { getFullUrl } from "./get-shorten-url";
-import { redis } from "@/clients/redis";
+import { shortenUrl } from "./set-shorten-url";
 
 vi.mock("shortenUrlPayloadSchema", async () => {
   const shortenUrlPayloadSchema = await vi.importActual<
@@ -13,19 +12,6 @@ vi.mock("shortenUrlPayloadSchema", async () => {
     shortenUrlPayloadSchema,
   };
 });
-
-vi.mock("@/clients/redis", () => ({
-  redis: {
-    set: async <T>(
-      key: string,
-      value: T,
-      options: { ex: number },
-    ): Promise<string | null> => {
-      return "OK";
-    },
-    get: vi.fn(),
-  },
-}));
 
 vi.mock("next/navigation", async () => {
   const mockedNavigation = await vi.importActual<
