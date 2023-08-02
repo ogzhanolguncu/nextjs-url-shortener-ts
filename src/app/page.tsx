@@ -1,10 +1,14 @@
 import { shortenUrl } from "@/actions/set-shorten-url";
 import { Feedback } from "@/components/Feedback";
 import { SubmitButton } from "@/components/SubmitButton";
+import Head from "next/head";
 
 export default function Home() {
   return (
     <main className="mx-auto flex h-screen max-w-[1000px] flex-col items-center justify-center px-4 md:flex-row">
+      <Head>
+        <title>My page title</title>
+      </Head>
       <div className="text-center md:w-2/3 md:text-left">
         <div className="relative">
           <h1 className="text-[2.5rem] font-bold md:text-[50px]">

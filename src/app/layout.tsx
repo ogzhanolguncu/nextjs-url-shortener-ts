@@ -19,6 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <title>Time to Shorten!</title>
       <body className={poppins.className}>{children}</body>
     </html>
   );
