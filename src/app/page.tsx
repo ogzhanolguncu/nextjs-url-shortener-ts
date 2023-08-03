@@ -1,6 +1,6 @@
 import { getAllShortenedUrls } from "@/actions/get-all-shortened-urls";
 import { shortenUrl } from "@/actions/shorten-url";
-import { CopyToClipboard } from "@/components/CopyToClipboard";
+import { InfoCard } from "@/components/InfoCard";
 import { SubmitButton } from "@/components/SubmitButton";
 import Head from "next/head";
 
@@ -37,49 +37,21 @@ export default async function Home() {
                 </form>
               </div>
             </div>
-            <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
-              {listOfUrls?.map((url, index) => (
-                <div
-                  className="md:text-md flex w-full items-center justify-between rounded-lg bg-[#cda6f3] p-3 text-slate-800"
-                  key={index}
-                >
-                  <div className="flex w-full flex-col gap-4">
-                    <div className="flex items-center justify-between">
-                      <h2 className="mb-1 font-bold">Shortened URL:</h2>
-                      <CopyToClipboard textToCopy={url.formattedUrl} />
-                    </div>
-
-                    <p className="h-5 overflow-hidden text-ellipsis font-medium hover:text-clip">
-                      {url.formattedUrl}
-                    </p>
-                    <p className=" overflow-hidden text-ellipsis font-medium hover:text-clip">
-                      <span className="font-bold">Created:</span>{" "}
-                      {formatDate(url.createadAt)}
-                    </p>
-                    <p className=" overflow-hidden text-ellipsis font-medium hover:text-clip">
-                      <span className="font-bold">Expires:</span>{" "}
-                      {formatDate(url.expiredAt)}
-                    </p>
-                  </div>
+            {listOfUrls?.length ? (
+              <>
+                <h2 className="mb-1 mt-10 text-[1.75rem] font-bold md:text-[25px]">
+                  URLs and Expiry Times
+                </h2>
+                <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {listOfUrls?.map((url, index) => (
+                    <InfoCard key={index} {...url}></InfoCard>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </>
+            ) : null}
           </div>
         </div>
       </div>
     </main>
   );
 }
-
-const formatDate = (timestamp: number) => {
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  };
-
-  return new Intl.DateTimeFormat("en-US", options).format(timestamp);
-};

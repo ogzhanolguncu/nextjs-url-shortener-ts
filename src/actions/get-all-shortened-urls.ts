@@ -6,7 +6,12 @@ import {
 } from "@/services/shortener/shorten-url";
 import { getExistingUserId } from "./utils";
 
-type ShortLinkCacheValuesUI = ShortLinkCacheValues & { formattedUrl: string };
+export type ShortLinkCacheValuesUI = Omit<
+  ShortLinkCacheValues,
+  "k" | "actualLink"
+> & {
+  formattedUrl: string;
+};
 
 export const getAllShortenedUrls = async (): Promise<
   ShortLinkCacheValuesUI[] | null
@@ -22,8 +27,10 @@ export const getAllShortenedUrls = async (): Promise<
     ? `https://${process.env.VERCEL_URL}/`
     : "http://localhost:3000/";
 
-  return listOfUrls.map((url) => ({
-    ...url,
-    formattedUrl: `${currentVercelUrl}${url.k}`,
-  }));
+  return listOfUrls
+    .map((url) => ({
+      ...url,
+      formattedUrl: `${currentVercelUrl}${url.k}`,
+    }))
+    .map(({ actualLink, k, ...rest }) => rest);
 };
