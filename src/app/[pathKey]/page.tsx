@@ -1,4 +1,4 @@
-import { getFullUrl } from "@/actions/get-shorten-url";
+import { getFullUrl } from "@/actions/get-shortened-url";
 
 type Props = {
   params: { [key: string]: string };

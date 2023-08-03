@@ -15,13 +15,14 @@ export const EIGHT_HOUR_IN_MS = EIGHT_HOUR_IN_SEC * 1000;
 export const setShortUrlToCache = async (
   linkToShorten: string,
   expirationTime = EIGHT_HOUR_IN_SEC,
+  userId: string,
 ) => {
   const payload: ShortLinkCacheValues = {
     createadAt: Date.now(),
     expiredAt: expirationTime,
     actualLink: linkToShorten,
   };
-  const pathKey = nanoid(UUID_LENGTH);
+  const pathKey = `${nanoid(UUID_LENGTH)}:${userId}`;
   const res = fromPromise(
     redis.set<ShortLinkCacheValues>(pathKey, payload, {
       ex: expirationTime,
@@ -37,13 +38,11 @@ export const setShortUrlToCache = async (
   );
 };
 
-export const getShortUrlFromCache = async (pathKey: string) => {
-  const res = fromPromise(
-    redis.get<ShortLinkCacheValues>(pathKey),
-    (_error) => {
-      console.error(`Something went wrong when getting k:${pathKey}`);
-    },
-  );
+export const getShortUrlFromCache = async (pathKey: string, userId: string) => {
+  const key = `${pathKey}:${userId}`;
+  const res = fromPromise(redis.get<ShortLinkCacheValues>(key), (_error) => {
+    console.error(`Something went wrong when getting k:${key}`);
+  });
 
   return res.match(
     (res) => res,

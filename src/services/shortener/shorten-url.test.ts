@@ -1,7 +1,8 @@
 import { redis } from "@/clients/redis";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { getShortUrlFromCache, setShortUrlToCache } from "./shorten-url";
-import crypto from "crypto";
+import { nanoid } from "nanoid";
+const fakeUserId = nanoid();
 
 describe("Shorten URL Set", () => {
   afterEach(() => {
@@ -9,11 +10,13 @@ describe("Shorten URL Set", () => {
   });
 
   it("should shorten a url and return shortened path", async () => {
-    vi.spyOn(redis, "set").mockResolvedValue(
-      Promise.resolve(crypto.randomUUID()),
-    );
+    vi.spyOn(redis, "set").mockResolvedValue(Promise.resolve(nanoid()));
 
-    const result = await setShortUrlToCache("https://ogzhanolguncu.com/");
+    const result = await setShortUrlToCache(
+      "https://ogzhanolguncu.com/",
+      undefined,
+      fakeUserId,
+    );
     expect(result).toBeTruthy();
   });
 
@@ -21,7 +24,7 @@ describe("Shorten URL Set", () => {
     vi.spyOn(redis, "set").mockResolvedValue(Promise.reject(null));
 
     await expect(
-      setShortUrlToCache("https://ogzhanolguncu.com/"),
+      setShortUrlToCache("https://ogzhanolguncu.com/", undefined, fakeUserId),
     ).resolves.toBe(null);
   });
 });
@@ -39,8 +42,12 @@ describe("Shorten URL Get", () => {
     );
     vi.spyOn(redis, "get").mockResolvedValue(Promise.resolve(urlToShorten));
 
-    const resultOfSet = await setShortUrlToCache(urlToShorten);
-    const resultOfGet = await getShortUrlFromCache(resultOfSet!);
+    const resultOfSet = await setShortUrlToCache(
+      urlToShorten,
+      undefined,
+      fakeUserId,
+    );
+    const resultOfGet = await getShortUrlFromCache(resultOfSet!, fakeUserId);
     expect(resultOfGet).toBe(urlToShorten);
   });
 });

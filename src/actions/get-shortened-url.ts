@@ -2,9 +2,14 @@
 
 import { getShortUrlFromCache } from "@/services/shortener/shorten-url";
 import { redirect } from "next/navigation";
+import { getExistingUserId } from "./set-shorten-urls/utils";
 
 export const getFullUrl = async (pathKey: string) => {
-  const fullUrlResponse = await getShortUrlFromCache(pathKey);
+  const userId = getExistingUserId();
+  console.log({ userId });
+  if (!userId) throw new Error("Url doesn't exist");
+
+  const fullUrlResponse = await getShortUrlFromCache(pathKey, userId);
   if (!fullUrlResponse) throw new Error("Url doesn't exist");
   redirect(fullUrlResponse.actualLink);
 };

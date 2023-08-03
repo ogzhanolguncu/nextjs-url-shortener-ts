@@ -1,8 +1,9 @@
 import * as shortenUrlService from "@/services/shortener/shorten-url";
 import { nanoid } from "nanoid";
 import { describe, expect, it, vi } from "vitest";
-import { getFullUrl } from "./get-shorten-url";
-import { shortenUrl } from "./set-shorten-url";
+import { getFullUrl } from "./get-shortened-url";
+import { shortenUrl } from "./set-shorten-urls/shorten-url";
+import * as shortenUrlUtils from "./set-shorten-urls/utils";
 
 vi.mock("shortenUrlPayloadSchema", async () => {
   const shortenUrlPayloadSchema = await vi.importActual<
@@ -34,7 +35,9 @@ vi.mock("next/headers", async () => {
     })),
   };
 });
-
+vi.spyOn(shortenUrlUtils, "getExistingUserId").mockImplementation(() =>
+  Promise.resolve("userId"),
+);
 describe("Shorten URL Server Actions", () => {
   it("should call setShortUrlToCache to cache", async () => {
     vi.spyOn(shortenUrlService, "setShortUrlToCache").mockImplementation(() =>
