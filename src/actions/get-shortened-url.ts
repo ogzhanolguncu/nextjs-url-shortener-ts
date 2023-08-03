@@ -2,7 +2,7 @@
 
 import { getShortUrlFromCache } from "@/services/shortener/shorten-url";
 import { redirect } from "next/navigation";
-import { getExistingUserId } from "./set-shorten-urls/utils";
+import { getExistingUserId } from "./utils";
 
 export const getFullUrl = async (pathKey: string) => {
   const userId = getExistingUserId();

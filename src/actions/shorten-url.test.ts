@@ -2,7 +2,7 @@ import * as shortenUrlService from "@/services/shortener/shorten-url";
 import { nanoid } from "nanoid";
 import { describe, expect, it, vi } from "vitest";
 import { getFullUrl } from "./get-shortened-url";
-import { shortenUrl } from "./set-shorten-urls/shorten-url";
+import { shortenUrl } from "./shorten-url";
 
 describe("Shorten URL Server Actions", () => {
   it("should call setShortUrlToCache to cache", async () => {

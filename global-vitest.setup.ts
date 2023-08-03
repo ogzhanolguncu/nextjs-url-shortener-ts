@@ -50,7 +50,6 @@ vi.mock("next/headers", async () => {
   };
 });
 vi.mock(
-  "@/actions/set-shorten-urls/utils.ts",
-  async () =>
-    await vi.importActual("@/__mocks__/actions/set-shorten-urls/utils.ts"),
+  "@/actions/utils.ts",
+  async () => await vi.importActual("@/__mocks__/actions/utils.ts"),
 );
