@@ -1,5 +1,6 @@
 import Home from "@/app/page";
-import { cleanup, render, screen } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
+import { Suspense } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("react-dom", async () => ({
@@ -12,8 +13,9 @@ describe("Home page tests", () => {
     cleanup();
   });
 
-  it("should render home page without issues", () => {
-    render(<Home />);
+  it("should render home page without issues", async () => {
+    render(await (async () => await Home())());
+
     expect(screen.findByText("Time to Shorten!")).toBeDefined();
   });
 });

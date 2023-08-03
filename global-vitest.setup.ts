@@ -51,6 +51,15 @@ vi.mock("next/headers", async () => {
     })),
   };
 });
+vi.mock("next/cache", async () => {
+  const mockedCache = await vi.importActual<typeof import("next/headers")>(
+    "next/cache",
+  );
+  return {
+    ...mockedCache,
+    revalidatePath: vi.fn(),
+  };
+});
 vi.mock(
   "@/actions/utils.ts",
   async () => await vi.importActual("@/__mocks__/actions/utils.ts"),
