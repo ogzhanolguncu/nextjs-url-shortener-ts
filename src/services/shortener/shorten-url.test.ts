@@ -47,7 +47,24 @@ describe("Shorten URL Get", () => {
       undefined,
       fakeUserId,
     );
-    const resultOfGet = await getShortUrlFromCache(resultOfSet!, fakeUserId);
+    const resultOfGet = await getShortUrlFromCache(resultOfSet!);
+    expect(resultOfGet).toBe(urlToShorten);
+  });
+
+  it("should shorten a url and return all shortened path", async () => {
+    const urlToShorten = "https://ogzhanolguncu.com/";
+    const keyForShortenedURL = crypto.randomUUID();
+    vi.spyOn(redis, "set").mockResolvedValue(
+      Promise.resolve(keyForShortenedURL),
+    );
+    vi.spyOn(redis, "get").mockResolvedValue(Promise.resolve(urlToShorten));
+
+    const resultOfSet = await setShortUrlToCache(
+      urlToShorten,
+      undefined,
+      fakeUserId,
+    );
+    const resultOfGet = await getShortUrlFromCache(resultOfSet!);
     expect(resultOfGet).toBe(urlToShorten);
   });
 });

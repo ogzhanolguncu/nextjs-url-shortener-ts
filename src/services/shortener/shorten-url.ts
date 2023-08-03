@@ -51,3 +51,11 @@ export const getShortUrlFromCache = async (pathKey: string) => {
     (_) => null,
   );
 };
+
+export const getAllShortUrlsFromCacheForUser = async (userId: string) => {
+  const keys = await redis.keys(`*${userId}*`);
+  if (Boolean(keys.length)) {
+    const listOfUrls = await redis.mget<ShortLinkCacheValues[]>(...keys);
+    return listOfUrls;
+  }
+};
