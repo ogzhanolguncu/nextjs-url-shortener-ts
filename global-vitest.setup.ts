@@ -10,6 +10,8 @@ vi.mock("@/clients/redis", () => ({
       return "OK";
     },
     get: vi.fn(),
+    keys: vi.fn().mockResolvedValue(["1", "2", "3"]),
+    mget: vi.fn(),
   },
 }));
 

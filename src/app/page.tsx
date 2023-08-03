@@ -6,7 +6,7 @@ import Head from "next/head";
 
 export default async function Home() {
   const listOfUrls = await getAllShortenedUrls();
-  console.log({ listOfUrls });
+
   return (
     <main className="mx-auto flex h-screen max-w-[1000px] flex-col items-center justify-center px-4 md:flex-row">
       <Head>
@@ -36,22 +36,33 @@ export default async function Home() {
                   <SubmitButton />
                 </form>
               </div>
-              <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-2">
-                {listOfUrls.map((url, index) => (
-                  <div
-                    className="md:text-md flex w-full items-center justify-between rounded-lg bg-[#cda6f3] p-3 text-slate-800"
-                    key={index}
-                  >
-                    <div className="flex w-60  flex-col ">
+            </div>
+            <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+              {listOfUrls?.map((url, index) => (
+                <div
+                  className="md:text-md flex w-full items-center justify-between rounded-lg bg-[#cda6f3] p-3 text-slate-800"
+                  key={index}
+                >
+                  <div className="flex w-full flex-col gap-4">
+                    <div className="flex items-center justify-between">
                       <h2 className="mb-1 font-bold">Shortened URL:</h2>
-                      <p className="overflow-hidden text-ellipsis font-medium hover:text-clip">
-                        {url.actualLink}
-                      </p>
+                      <CopyToClipboard textToCopy={url.formattedUrl} />
                     </div>
-                    <CopyToClipboard textToCopy={"#"} />
+
+                    <p className="h-5 overflow-hidden text-ellipsis font-medium hover:text-clip">
+                      {url.formattedUrl}
+                    </p>
+                    <p className=" overflow-hidden text-ellipsis font-medium hover:text-clip">
+                      <span className="font-bold">Created:</span>{" "}
+                      {formatDate(url.createadAt)}
+                    </p>
+                    <p className=" overflow-hidden text-ellipsis font-medium hover:text-clip">
+                      <span className="font-bold">Expires:</span>{" "}
+                      {formatDate(url.expiredAt)}
+                    </p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -59,3 +70,16 @@ export default async function Home() {
     </main>
   );
 }
+
+const formatDate = (timestamp: number) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  };
+
+  return new Intl.DateTimeFormat("en-US", options).format(timestamp);
+};

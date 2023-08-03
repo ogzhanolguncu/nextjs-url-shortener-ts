@@ -6,6 +6,7 @@ export type ShortLinkCacheValues = {
   createadAt: number; //Date.now()
   expiredAt: number; //Date.now()
   actualLink: string;
+  k: string;
 };
 
 export const UUID_LENGTH = 6;
@@ -17,12 +18,14 @@ export const setShortUrlToCache = async (
   expirationTime = EIGHT_HOUR_IN_SEC,
   userId: string,
 ) => {
+  const pathKey = `${nanoid(UUID_LENGTH)}:${userId}`;
+
   const payload: ShortLinkCacheValues = {
     createadAt: Date.now(),
-    expiredAt: expirationTime,
+    expiredAt: Date.now() + EIGHT_HOUR_IN_MS,
     actualLink: linkToShorten,
+    k: pathKey,
   };
-  const pathKey = `${nanoid(UUID_LENGTH)}:${userId}`;
   const res = fromPromise(
     redis.set<ShortLinkCacheValues>(pathKey, payload, {
       ex: expirationTime,
