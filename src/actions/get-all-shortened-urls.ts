@@ -18,7 +18,10 @@ export const getAllShortenedUrls = async (): Promise<
 > => {
   const userId = getExistingUserId();
   console.log(`User with ${userId} is trying to access one of the stored URLs`);
-  if (!userId) throw new Error("Url doesn't exist");
+  if (!userId) {
+    console.log(`userId is missing`);
+    return null;
+  }
 
   const listOfUrls = await getAllShortUrlsFromCacheForUser(userId);
   if (!listOfUrls) return null;
