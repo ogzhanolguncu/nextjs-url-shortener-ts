@@ -27,7 +27,7 @@ export const getAllShortenedUrls = async (): Promise<
   if (!listOfUrls) return null;
 
   const currentVercelUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}/`
+    ? `https://nextjs-url-shortener-ts.vercel.app/`
     : "http://localhost:3000/";
 
   return listOfUrls
