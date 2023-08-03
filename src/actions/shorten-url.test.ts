@@ -3,41 +3,7 @@ import { nanoid } from "nanoid";
 import { describe, expect, it, vi } from "vitest";
 import { getFullUrl } from "./get-shortened-url";
 import { shortenUrl } from "./set-shorten-urls/shorten-url";
-import * as shortenUrlUtils from "./set-shorten-urls/utils";
 
-vi.mock("shortenUrlPayloadSchema", async () => {
-  const shortenUrlPayloadSchema = await vi.importActual<
-    typeof import("@/lib/schema/shorten-url-schema")
-  >("@/lib/schema/shorten-url-schema");
-  return {
-    shortenUrlPayloadSchema,
-  };
-});
-
-vi.mock("next/navigation", async () => {
-  const mockedNavigation = await vi.importActual<
-    typeof import("next/navigation")
-  >("next/navigation");
-  return {
-    ...mockedNavigation,
-    redirect: vi.fn(),
-  };
-});
-vi.mock("next/headers", async () => {
-  const mockedHeaders = await vi.importActual<typeof import("next/headers")>(
-    "next/headers",
-  );
-  return {
-    ...mockedHeaders,
-    cookies: vi.fn(() => ({
-      get: vi.fn(),
-      set: vi.fn(),
-    })),
-  };
-});
-vi.spyOn(shortenUrlUtils, "getExistingUserId").mockImplementation(() =>
-  Promise.resolve("userId"),
-);
 describe("Shorten URL Server Actions", () => {
   it("should call setShortUrlToCache to cache", async () => {
     vi.spyOn(shortenUrlService, "setShortUrlToCache").mockImplementation(() =>

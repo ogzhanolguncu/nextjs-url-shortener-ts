@@ -1,4 +1,4 @@
-import { shortenUrl } from "@/actions/set-shorten-url";
+import { shortenUrl } from "@/actions/set-shorten-urls/shorten-url";
 import { Feedback } from "@/components/Feedback";
 import { SubmitButton } from "@/components/SubmitButton";
 import Head from "next/head";

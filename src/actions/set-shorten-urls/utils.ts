@@ -16,7 +16,7 @@ export function trackUserWithCookie() {
   return existingUserId;
 }
 
-export function getExistingUserId() {
+export function getExistingUserId(ahmet = "hello") {
   return cookies().get(USER_ID_COOKIE)?.value || null;
 }
 

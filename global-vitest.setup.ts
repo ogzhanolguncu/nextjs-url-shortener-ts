@@ -24,5 +24,33 @@ vi.mock("next/navigation", () => {
       get: vi.fn(),
     })),
     usePathname: vi.fn(),
+    redirect: vi.fn(),
   };
 });
+
+vi.mock("shortenUrlPayloadSchema", async () => {
+  const shortenUrlPayloadSchema = await vi.importActual<
+    typeof import("@/lib/schema/shorten-url-schema")
+  >("@/lib/schema/shorten-url-schema");
+  return {
+    shortenUrlPayloadSchema,
+  };
+});
+
+vi.mock("next/headers", async () => {
+  const mockedHeaders = await vi.importActual<typeof import("next/headers")>(
+    "next/headers",
+  );
+  return {
+    ...mockedHeaders,
+    cookies: vi.fn(() => ({
+      get: vi.fn(),
+      set: vi.fn(),
+    })),
+  };
+});
+vi.mock(
+  "@/actions/set-shorten-urls/utils.ts",
+  async () =>
+    await vi.importActual("@/__mocks__/actions/set-shorten-urls/utils.ts"),
+);
