@@ -38,11 +38,13 @@ export const setShortUrlToCache = async (
   );
 };
 
-export const getShortUrlFromCache = async (pathKey: string, userId: string) => {
-  const key = `${pathKey}:${userId}`;
-  const res = fromPromise(redis.get<ShortLinkCacheValues>(key), (_error) => {
-    console.error(`Something went wrong when getting k:${key}`);
-  });
+export const getShortUrlFromCache = async (pathKey: string) => {
+  const res = fromPromise(
+    redis.get<ShortLinkCacheValues>(pathKey),
+    (_error) => {
+      console.error(`Something went wrong when getting k:${pathKey}`);
+    },
+  );
 
   return res.match(
     (res) => res,
