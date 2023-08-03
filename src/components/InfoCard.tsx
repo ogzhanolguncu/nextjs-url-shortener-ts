@@ -28,13 +28,13 @@ export function InfoCard({
       className="md:text-md relative flex w-full items-center justify-between rounded-lg bg-[#cda6f3] p-3 text-slate-800"
     >
       <div className="flex w-full flex-col gap-4">
-        <p className="h-5 overflow-hidden text-ellipsis font-medium hover:text-clip">
+        <p className="h-5 overflow-hidden text-ellipsis text-start font-medium hover:text-clip">
           {formattedUrl}
         </p>
-        <p className=" font-medium hover:text-clip">
+        <p className="text-start font-medium hover:text-clip">
           <span className="font-bold">Created:</span> {formatDate(createadAt)}
         </p>
-        <p className="font-medium hover:text-clip">
+        <p className="text-start font-medium hover:text-clip">
           <span className="font-bold">Expires:</span> {formatDate(expiredAt)}
         </p>
         <div className="absolute bottom-2 right-3.5">

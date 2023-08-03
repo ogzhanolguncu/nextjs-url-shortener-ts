@@ -32,5 +32,6 @@ export const getAllShortenedUrls = async (): Promise<
       ...url,
       formattedUrl: `${currentVercelUrl}${url.k}`,
     }))
-    .map(({ actualLink, k, ...rest }) => rest);
+    .map(({ actualLink, k, ...rest }) => rest)
+    .slice(-6);
 };
