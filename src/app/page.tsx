@@ -1,6 +1,6 @@
 import { getAllShortenedUrls } from "@/actions/get-all-shortened-urls";
 import { shortenUrl } from "@/actions/shorten-url";
-import { InfoCard } from "@/components/InfoCard";
+import { InfoCardContainer } from "@/components/InfoCardContainer";
 import { SubmitButton } from "@/components/SubmitButton";
 import Head from "next/head";
 
@@ -38,16 +38,7 @@ export default async function Home() {
               </div>
             </div>
             {listOfUrls?.length ? (
-              <>
-                <h2 className="mb-1 mt-10 text-[1.75rem] font-bold md:text-[25px]">
-                  URLs and Expiry Times
-                </h2>
-                <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {listOfUrls?.map((url, index) => (
-                    <InfoCard key={index} {...url}></InfoCard>
-                  ))}
-                </div>
-              </>
+              <InfoCardContainer listOfUrls={listOfUrls} />
             ) : null}
           </div>
         </div>
