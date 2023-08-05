@@ -9,7 +9,7 @@ export type ShortLinkCacheValues = {
   k: string;
 };
 
-export const UUID_LENGTH = 6;
+export const UUID_LENGTH = 5;
 const EIGHT_HOUR_IN_SEC = 3600 * 8;
 export const EIGHT_HOUR_IN_MS = EIGHT_HOUR_IN_SEC * 1000;
 

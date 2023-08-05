@@ -5,14 +5,12 @@ import { cookies } from "next/headers";
 export function trackUserWithCookie() {
   const existingUserId = getExistingUserId();
 
-  // If the user ID cookie does not exist, create a new one
   if (!existingUserId) {
     const newUserId = generateNewUserId();
     setUserIdCookie(newUserId);
     return newUserId;
   }
 
-  // Return the existing user ID
   return existingUserId;
 }
 
@@ -21,7 +19,7 @@ export function getExistingUserId() {
 }
 
 function generateNewUserId() {
-  return nanoid();
+  return nanoid(6);
 }
 
 function setUserIdCookie(newUserId: string) {
